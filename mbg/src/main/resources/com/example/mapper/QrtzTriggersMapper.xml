@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.QrtzTriggersMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.QrtzTriggers">
+    <id column="sched_name" jdbcType="VARCHAR" property="schedName" />
+    <id column="trigger_name" jdbcType="VARCHAR" property="triggerName" />
+    <id column="trigger_group" jdbcType="VARCHAR" property="triggerGroup" />
+    <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+    <result column="job_group" jdbcType="VARCHAR" property="jobGroup" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="next_fire_time" jdbcType="BIGINT" property="nextFireTime" />
+    <result column="prev_fire_time" jdbcType="BIGINT" property="prevFireTime" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
+    <result column="trigger_state" jdbcType="VARCHAR" property="triggerState" />
+    <result column="trigger_type" jdbcType="VARCHAR" property="triggerType" />
+    <result column="start_time" jdbcType="BIGINT" property="startTime" />
+    <result column="end_time" jdbcType="BIGINT" property="endTime" />
+    <result column="calendar_name" jdbcType="VARCHAR" property="calendarName" />
+    <result column="misfire_instr" jdbcType="SMALLINT" property="misfireInstr" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.example.model.QrtzTriggers">
+    <result column="job_data" jdbcType="LONGVARBINARY" property="jobData" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sched_name, trigger_name, trigger_group, job_name, job_group, description, next_fire_time, 
+    prev_fire_time, priority, trigger_state, trigger_type, start_time, end_time, calendar_name, 
+    misfire_instr
+  </sql>
+  <sql id="Blob_Column_List">
+    job_data
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.example.model.QrtzTriggersExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from qrtz_triggers
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.example.model.QrtzTriggersExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from qrtz_triggers
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from qrtz_triggers
+    where sched_name = #{schedName,jdbcType=VARCHAR}
+      and trigger_name = #{triggerName,jdbcType=VARCHAR}
+      and trigger_group = #{triggerGroup,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from qrtz_triggers
+    where sched_name = #{schedName,jdbcType=VARCHAR}
+      and trigger_name = #{triggerName,jdbcType=VARCHAR}
+      and trigger_group = #{triggerGroup,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.model.QrtzTriggersExample">
+    delete from qrtz_triggers
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.model.QrtzTriggers">
+    insert into qrtz_triggers (sched_name, trigger_name, trigger_group, 
+      job_name, job_group, description, 
+      next_fire_time, prev_fire_time, priority, 
+      trigger_state, trigger_type, start_time, 
+      end_time, calendar_name, misfire_instr, 
+      job_data)
+    values (#{schedName,jdbcType=VARCHAR}, #{triggerName,jdbcType=VARCHAR}, #{triggerGroup,jdbcType=VARCHAR}, 
+      #{jobName,jdbcType=VARCHAR}, #{jobGroup,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{nextFireTime,jdbcType=BIGINT}, #{prevFireTime,jdbcType=BIGINT}, #{priority,jdbcType=INTEGER}, 
+      #{triggerState,jdbcType=VARCHAR}, #{triggerType,jdbcType=VARCHAR}, #{startTime,jdbcType=BIGINT}, 
+      #{endTime,jdbcType=BIGINT}, #{calendarName,jdbcType=VARCHAR}, #{misfireInstr,jdbcType=SMALLINT}, 
+      #{jobData,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.QrtzTriggers">
+    insert into qrtz_triggers
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="schedName != null">
+        sched_name,
+      </if>
+      <if test="triggerName != null">
+        trigger_name,
+      </if>
+      <if test="triggerGroup != null">
+        trigger_group,
+      </if>
+      <if test="jobName != null">
+        job_name,
+      </if>
+      <if test="jobGroup != null">
+        job_group,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="nextFireTime != null">
+        next_fire_time,
+      </if>
+      <if test="prevFireTime != null">
+        prev_fire_time,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="triggerState != null">
+        trigger_state,
+      </if>
+      <if test="triggerType != null">
+        trigger_type,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="calendarName != null">
+        calendar_name,
+      </if>
+      <if test="misfireInstr != null">
+        misfire_instr,
+      </if>
+      <if test="jobData != null">
+        job_data,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="schedName != null">
+        #{schedName,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerName != null">
+        #{triggerName,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerGroup != null">
+        #{triggerGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="jobName != null">
+        #{jobName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobGroup != null">
+        #{jobGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="nextFireTime != null">
+        #{nextFireTime,jdbcType=BIGINT},
+      </if>
+      <if test="prevFireTime != null">
+        #{prevFireTime,jdbcType=BIGINT},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="triggerState != null">
+        #{triggerState,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerType != null">
+        #{triggerType,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="calendarName != null">
+        #{calendarName,jdbcType=VARCHAR},
+      </if>
+      <if test="misfireInstr != null">
+        #{misfireInstr,jdbcType=SMALLINT},
+      </if>
+      <if test="jobData != null">
+        #{jobData,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.model.QrtzTriggersExample" resultType="java.lang.Long">
+    select count(*) from qrtz_triggers
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update qrtz_triggers
+    <set>
+      <if test="record.schedName != null">
+        sched_name = #{record.schedName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.triggerName != null">
+        trigger_name = #{record.triggerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.triggerGroup != null">
+        trigger_group = #{record.triggerGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobName != null">
+        job_name = #{record.jobName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobGroup != null">
+        job_group = #{record.jobGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nextFireTime != null">
+        next_fire_time = #{record.nextFireTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.prevFireTime != null">
+        prev_fire_time = #{record.prevFireTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.priority != null">
+        priority = #{record.priority,jdbcType=INTEGER},
+      </if>
+      <if test="record.triggerState != null">
+        trigger_state = #{record.triggerState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.triggerType != null">
+        trigger_type = #{record.triggerType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTime != null">
+        start_time = #{record.startTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.calendarName != null">
+        calendar_name = #{record.calendarName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.misfireInstr != null">
+        misfire_instr = #{record.misfireInstr,jdbcType=SMALLINT},
+      </if>
+      <if test="record.jobData != null">
+        job_data = #{record.jobData,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update qrtz_triggers
+    set sched_name = #{record.schedName,jdbcType=VARCHAR},
+      trigger_name = #{record.triggerName,jdbcType=VARCHAR},
+      trigger_group = #{record.triggerGroup,jdbcType=VARCHAR},
+      job_name = #{record.jobName,jdbcType=VARCHAR},
+      job_group = #{record.jobGroup,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      next_fire_time = #{record.nextFireTime,jdbcType=BIGINT},
+      prev_fire_time = #{record.prevFireTime,jdbcType=BIGINT},
+      priority = #{record.priority,jdbcType=INTEGER},
+      trigger_state = #{record.triggerState,jdbcType=VARCHAR},
+      trigger_type = #{record.triggerType,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=BIGINT},
+      end_time = #{record.endTime,jdbcType=BIGINT},
+      calendar_name = #{record.calendarName,jdbcType=VARCHAR},
+      misfire_instr = #{record.misfireInstr,jdbcType=SMALLINT},
+      job_data = #{record.jobData,jdbcType=LONGVARBINARY}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update qrtz_triggers
+    set sched_name = #{record.schedName,jdbcType=VARCHAR},
+      trigger_name = #{record.triggerName,jdbcType=VARCHAR},
+      trigger_group = #{record.triggerGroup,jdbcType=VARCHAR},
+      job_name = #{record.jobName,jdbcType=VARCHAR},
+      job_group = #{record.jobGroup,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      next_fire_time = #{record.nextFireTime,jdbcType=BIGINT},
+      prev_fire_time = #{record.prevFireTime,jdbcType=BIGINT},
+      priority = #{record.priority,jdbcType=INTEGER},
+      trigger_state = #{record.triggerState,jdbcType=VARCHAR},
+      trigger_type = #{record.triggerType,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=BIGINT},
+      end_time = #{record.endTime,jdbcType=BIGINT},
+      calendar_name = #{record.calendarName,jdbcType=VARCHAR},
+      misfire_instr = #{record.misfireInstr,jdbcType=SMALLINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.QrtzTriggers">
+    update qrtz_triggers
+    <set>
+      <if test="jobName != null">
+        job_name = #{jobName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobGroup != null">
+        job_group = #{jobGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="nextFireTime != null">
+        next_fire_time = #{nextFireTime,jdbcType=BIGINT},
+      </if>
+      <if test="prevFireTime != null">
+        prev_fire_time = #{prevFireTime,jdbcType=BIGINT},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="triggerState != null">
+        trigger_state = #{triggerState,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerType != null">
+        trigger_type = #{triggerType,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="calendarName != null">
+        calendar_name = #{calendarName,jdbcType=VARCHAR},
+      </if>
+      <if test="misfireInstr != null">
+        misfire_instr = #{misfireInstr,jdbcType=SMALLINT},
+      </if>
+      <if test="jobData != null">
+        job_data = #{jobData,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where sched_name = #{schedName,jdbcType=VARCHAR}
+      and trigger_name = #{triggerName,jdbcType=VARCHAR}
+      and trigger_group = #{triggerGroup,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.model.QrtzTriggers">
+    update qrtz_triggers
+    set job_name = #{jobName,jdbcType=VARCHAR},
+      job_group = #{jobGroup,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      next_fire_time = #{nextFireTime,jdbcType=BIGINT},
+      prev_fire_time = #{prevFireTime,jdbcType=BIGINT},
+      priority = #{priority,jdbcType=INTEGER},
+      trigger_state = #{triggerState,jdbcType=VARCHAR},
+      trigger_type = #{triggerType,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=BIGINT},
+      end_time = #{endTime,jdbcType=BIGINT},
+      calendar_name = #{calendarName,jdbcType=VARCHAR},
+      misfire_instr = #{misfireInstr,jdbcType=SMALLINT},
+      job_data = #{jobData,jdbcType=LONGVARBINARY}
+    where sched_name = #{schedName,jdbcType=VARCHAR}
+      and trigger_name = #{triggerName,jdbcType=VARCHAR}
+      and trigger_group = #{triggerGroup,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.QrtzTriggers">
+    update qrtz_triggers
+    set job_name = #{jobName,jdbcType=VARCHAR},
+      job_group = #{jobGroup,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      next_fire_time = #{nextFireTime,jdbcType=BIGINT},
+      prev_fire_time = #{prevFireTime,jdbcType=BIGINT},
+      priority = #{priority,jdbcType=INTEGER},
+      trigger_state = #{triggerState,jdbcType=VARCHAR},
+      trigger_type = #{triggerType,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=BIGINT},
+      end_time = #{endTime,jdbcType=BIGINT},
+      calendar_name = #{calendarName,jdbcType=VARCHAR},
+      misfire_instr = #{misfireInstr,jdbcType=SMALLINT}
+    where sched_name = #{schedName,jdbcType=VARCHAR}
+      and trigger_name = #{triggerName,jdbcType=VARCHAR}
+      and trigger_group = #{triggerGroup,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.GenTableMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.GenTable">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+    <result column="table_comment" jdbcType="VARCHAR" property="tableComment" />
+    <result column="sub_table_name" jdbcType="VARCHAR" property="subTableName" />
+    <result column="sub_table_fk_name" jdbcType="VARCHAR" property="subTableFkName" />
+    <result column="class_name" jdbcType="VARCHAR" property="className" />
+    <result column="tpl_category" jdbcType="VARCHAR" property="tplCategory" />
+    <result column="package_name" jdbcType="VARCHAR" property="packageName" />
+    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
+    <result column="business_name" jdbcType="VARCHAR" property="businessName" />
+    <result column="function_name" jdbcType="VARCHAR" property="functionName" />
+    <result column="function_author" jdbcType="VARCHAR" property="functionAuthor" />
+    <result column="gen_type" jdbcType="CHAR" property="genType" />
+    <result column="gen_path" jdbcType="VARCHAR" property="genPath" />
+    <result column="options" jdbcType="VARCHAR" property="options" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, table_name, table_comment, sub_table_name, sub_table_fk_name, class_name, tpl_category, 
+    package_name, module_name, business_name, function_name, function_author, gen_type, 
+    gen_path, options, create_by, create_time, update_by, update_time, remark
+  </sql>
+  <select id="selectByExample" parameterType="com.example.model.GenTableExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from gen_table
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from gen_table
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from gen_table
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.model.GenTableExample">
+    delete from gen_table
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.model.GenTable">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into gen_table (table_name, table_comment, sub_table_name, 
+      sub_table_fk_name, class_name, tpl_category, 
+      package_name, module_name, business_name, 
+      function_name, function_author, gen_type, 
+      gen_path, options, create_by, 
+      create_time, update_by, update_time, 
+      remark)
+    values (#{tableName,jdbcType=VARCHAR}, #{tableComment,jdbcType=VARCHAR}, #{subTableName,jdbcType=VARCHAR}, 
+      #{subTableFkName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{tplCategory,jdbcType=VARCHAR}, 
+      #{packageName,jdbcType=VARCHAR}, #{moduleName,jdbcType=VARCHAR}, #{businessName,jdbcType=VARCHAR}, 
+      #{functionName,jdbcType=VARCHAR}, #{functionAuthor,jdbcType=VARCHAR}, #{genType,jdbcType=CHAR}, 
+      #{genPath,jdbcType=VARCHAR}, #{options,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.GenTable">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into gen_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tableName != null">
+        table_name,
+      </if>
+      <if test="tableComment != null">
+        table_comment,
+      </if>
+      <if test="subTableName != null">
+        sub_table_name,
+      </if>
+      <if test="subTableFkName != null">
+        sub_table_fk_name,
+      </if>
+      <if test="className != null">
+        class_name,
+      </if>
+      <if test="tplCategory != null">
+        tpl_category,
+      </if>
+      <if test="packageName != null">
+        package_name,
+      </if>
+      <if test="moduleName != null">
+        module_name,
+      </if>
+      <if test="businessName != null">
+        business_name,
+      </if>
+      <if test="functionName != null">
+        function_name,
+      </if>
+      <if test="functionAuthor != null">
+        function_author,
+      </if>
+      <if test="genType != null">
+        gen_type,
+      </if>
+      <if test="genPath != null">
+        gen_path,
+      </if>
+      <if test="options != null">
+        options,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tableName != null">
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="tableComment != null">
+        #{tableComment,jdbcType=VARCHAR},
+      </if>
+      <if test="subTableName != null">
+        #{subTableName,jdbcType=VARCHAR},
+      </if>
+      <if test="subTableFkName != null">
+        #{subTableFkName,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="tplCategory != null">
+        #{tplCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="packageName != null">
+        #{packageName,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleName != null">
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessName != null">
+        #{businessName,jdbcType=VARCHAR},
+      </if>
+      <if test="functionName != null">
+        #{functionName,jdbcType=VARCHAR},
+      </if>
+      <if test="functionAuthor != null">
+        #{functionAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="genType != null">
+        #{genType,jdbcType=CHAR},
+      </if>
+      <if test="genPath != null">
+        #{genPath,jdbcType=VARCHAR},
+      </if>
+      <if test="options != null">
+        #{options,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.model.GenTableExample" resultType="java.lang.Long">
+    select count(*) from gen_table
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update gen_table
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.tableName != null">
+        table_name = #{record.tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tableComment != null">
+        table_comment = #{record.tableComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subTableName != null">
+        sub_table_name = #{record.subTableName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subTableFkName != null">
+        sub_table_fk_name = #{record.subTableFkName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.className != null">
+        class_name = #{record.className,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tplCategory != null">
+        tpl_category = #{record.tplCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.packageName != null">
+        package_name = #{record.packageName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moduleName != null">
+        module_name = #{record.moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessName != null">
+        business_name = #{record.businessName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.functionName != null">
+        function_name = #{record.functionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.functionAuthor != null">
+        function_author = #{record.functionAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.genType != null">
+        gen_type = #{record.genType,jdbcType=CHAR},
+      </if>
+      <if test="record.genPath != null">
+        gen_path = #{record.genPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.options != null">
+        options = #{record.options,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null">
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        update_by = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update gen_table
+    set id = #{record.id,jdbcType=BIGINT},
+      table_name = #{record.tableName,jdbcType=VARCHAR},
+      table_comment = #{record.tableComment,jdbcType=VARCHAR},
+      sub_table_name = #{record.subTableName,jdbcType=VARCHAR},
+      sub_table_fk_name = #{record.subTableFkName,jdbcType=VARCHAR},
+      class_name = #{record.className,jdbcType=VARCHAR},
+      tpl_category = #{record.tplCategory,jdbcType=VARCHAR},
+      package_name = #{record.packageName,jdbcType=VARCHAR},
+      module_name = #{record.moduleName,jdbcType=VARCHAR},
+      business_name = #{record.businessName,jdbcType=VARCHAR},
+      function_name = #{record.functionName,jdbcType=VARCHAR},
+      function_author = #{record.functionAuthor,jdbcType=VARCHAR},
+      gen_type = #{record.genType,jdbcType=CHAR},
+      gen_path = #{record.genPath,jdbcType=VARCHAR},
+      options = #{record.options,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.GenTable">
+    update gen_table
+    <set>
+      <if test="tableName != null">
+        table_name = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="tableComment != null">
+        table_comment = #{tableComment,jdbcType=VARCHAR},
+      </if>
+      <if test="subTableName != null">
+        sub_table_name = #{subTableName,jdbcType=VARCHAR},
+      </if>
+      <if test="subTableFkName != null">
+        sub_table_fk_name = #{subTableFkName,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="tplCategory != null">
+        tpl_category = #{tplCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="packageName != null">
+        package_name = #{packageName,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleName != null">
+        module_name = #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessName != null">
+        business_name = #{businessName,jdbcType=VARCHAR},
+      </if>
+      <if test="functionName != null">
+        function_name = #{functionName,jdbcType=VARCHAR},
+      </if>
+      <if test="functionAuthor != null">
+        function_author = #{functionAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="genType != null">
+        gen_type = #{genType,jdbcType=CHAR},
+      </if>
+      <if test="genPath != null">
+        gen_path = #{genPath,jdbcType=VARCHAR},
+      </if>
+      <if test="options != null">
+        options = #{options,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.GenTable">
+    update gen_table
+    set table_name = #{tableName,jdbcType=VARCHAR},
+      table_comment = #{tableComment,jdbcType=VARCHAR},
+      sub_table_name = #{subTableName,jdbcType=VARCHAR},
+      sub_table_fk_name = #{subTableFkName,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR},
+      tpl_category = #{tplCategory,jdbcType=VARCHAR},
+      package_name = #{packageName,jdbcType=VARCHAR},
+      module_name = #{moduleName,jdbcType=VARCHAR},
+      business_name = #{businessName,jdbcType=VARCHAR},
+      function_name = #{functionName,jdbcType=VARCHAR},
+      function_author = #{functionAuthor,jdbcType=VARCHAR},
+      gen_type = #{genType,jdbcType=CHAR},
+      gen_path = #{genPath,jdbcType=VARCHAR},
+      options = #{options,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.SysPostDao">
+    <sql id="Base_Column_List">
+        id, post_code as postCode, post_name_zh as postNameZh, post_name_en as postNameEn, dept_id as deptId, dept_name_zh as deptNameZh, dept_name_en as deptNameEn, order_num as orderNum,
+        status, del_flag as delFlag, create_by as createBy, create_time as createTime, update_by as updateBy, update_time as updateTime, remark
+    </sql>
+
+    <select id="selectPostList" resultType="com.example.model.SysPost">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_post
+        <where>
+            <if test="post.postCode != null and post.postCode != ''">
+                AND post_code like concat('%', #{post.postCode}, '%')
+            </if>
+            <if test="post.status != null and post.status != ''">
+                AND status = #{post.status}
+            </if>
+            <if test="post.postNameZh != null and post.postNameZh != ''">
+                AND post_name_zh like concat('%', #{post.postNameZh}, '%')
+            </if>
+            <if test="post.postNameEn != null and post.postNameEn != ''">
+                AND post_name_en like concat('%', #{post.postNameEn}, '%')
+            </if>
+            <if test="post.deptId != null and post.deptId != 0">
+                AND (dept_id = #{post.deptId} OR dept_id IN ( SELECT t.id FROM sys_dept t WHERE
+                find_in_set(#{post.deptId}, ancestors) ))
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPostNameListByUserId" resultType="java.lang.String">
+      select post_name_zh from sys_user_post up left join sys_post p on up.post_id = p.id where up.user_id = #{userId}
+    </select>
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.SysUserDao">
+
+    <sql id="Base_Column_List">
+        id, parent_id as parentId, user_name as userName, password, nick_name_zh as nickNameZh, nick_name_en as nickNameEn, user_type as userType, email,
+        phone, sex, avatar, status, del_flag as delFlag, theme, is_tab as isTab, is_set as isSet, is_header as isHeader, is_logo as isLogo,
+        login_ip as loginIp, login_date as loginDate, create_by as createBy, create_time as createTime, update_by as updateBy, update_time as updateTime, remark
+    </sql>
+
+    <select id="selectUserList" resultType="com.example.model.SysUser">
+        select distinct
+        <include refid="Base_Column_List" />
+        from sys_user u
+        left join sys_user_dept ud on u.id = ud.user_id
+        where 1=1
+        <if test="user.userName != null and user.userName != ''">
+            AND u.user_name like concat('%', #{user.userName}, '%')
+        </if>
+        <if test="user.status != null and user.status != ''">
+            AND u.status = #{user.status}
+        </if>
+        <if test="user.phone!= null and user.phone!= ''">
+            AND u.phone like concat('%', #{user.phone}, '%')
+        </if>
+        <if test="beginTime != null and endTime != null">
+            AND create_time between #{beginTime} and #{endTime}
+        </if>
+        <if test="deptId != null and deptId != ''">
+            AND (ud.dept_id =#{deptId} OR ud.dept_id IN ( SELECT t.id FROM sys_dept t WHERE find_in_set(#{deptId}, ancestors)))
+        </if>
+    </select>
+</mapper>

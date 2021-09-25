@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.SysNoticeDao">
+
+    <sql id="Base_Column_List">
+        id, notice_title as noticeTitle, notice_type as noticeType, status, del_flag as delFlag, create_by as createBy, create_time as createTime, update_by as updateBy,
+        update_time as updateTime, remark
+    </sql>
+    <sql id="Blob_Column_List">
+        cast(notice_content as char) as noticeContent
+    </sql>
+
+    <select id="selectByPrimaryKey" resultType="com.example.dto.SysNoticeDTO">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from sys_notice
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+</mapper>
