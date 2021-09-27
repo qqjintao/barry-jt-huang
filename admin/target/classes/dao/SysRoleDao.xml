@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.dao.SysRoleDao">
-
-    <select id="selectRoleNameListByUserId" resultType="java.lang.String">
-        select role_name_zh from sys_user_role ur left join sys_role r on ur.role_id = r.id where ur.user_id = #{userId}
-    </select>
-</mapper>
